@@ -39,10 +39,12 @@ def main():
         fail("entry must be a single line")
     if not line.strip():
         fail("entry must not be only whitespace")
-    if not (MIN_CHARS <= len(line) <= MAX_CHARS):
+    # The scorer measures the file, which also carries the trailing
+    # newline, so the line plus that newline must fit the gate.
+    if not (MIN_CHARS <= len(line) + 1 <= MAX_CHARS):
         fail(
-            "entry is %d characters, outside the gate of %d to %d"
-            % (len(line), MIN_CHARS, MAX_CHARS)
+            "entry file would be %d characters, outside the gate of "
+            "%d to %d" % (len(line) + 1, MIN_CHARS, MAX_CHARS)
         )
 
     out_dir = os.environ.get("OUTPUT_DIR") or "/output"
